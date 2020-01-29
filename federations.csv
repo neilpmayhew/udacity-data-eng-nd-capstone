@@ -1,0 +1,111 @@
+federation,division,bench_shirts_plies,bench_shirts_material,lifting_suits_plies,lifting_suits_material,lifting_suits_brief,mono,test
+100% Raw,,0,-,0,-,No,No,Yes
+AAU,Raw,0,-,0,-,No,No,Yes
+AAU,Equip,1,Pol,1,Pol,No,No,Yes
+ADAU,,0,-,0,-,No,No,Yes
+ADFPF,Raw,0(w),-,0,-,No,No,Yes
+ADFPF,Equip,1,Pol,1,Pol,No,No,Yes
+AFPF,,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,No
+AFPF,AAFPF,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,Yes
+AFPF,AFPF Raw,0(w),-,0,-,No,Yes,No
+AFPF,AAFPF Raw,0(w),-,0,-,No,Yes,Yes
+APA,Open,2,"Pol,Den",2,Pol,Yes,Yes,No
+APA,Tested,2,"Pol,Den",2,Pol,Yes,Yes,Yes
+APA,Unl Open,Unl,"Pol,Den,Can",Unl,"Pol,Den,Can",Yes,Yes,No
+APA,Unl Test,Unl,"Pol,Den,Can",Unl,"Pol,Den,Can",Yes,Yes,Yes
+APA,Raw Open,0(w),-,0(k),-,No,Yes,No
+APA,Raw Test,0(w),-,0(k),-,No,Yes,Yes
+APC,,2,"Pol,Den",UNL,"Pol,Den,Can",Yes,Yes,No
+APC,Raw,0(w),-,0(k),-,No,Yes,No
+APC,UAPC,2,"Pol,Den",2,"Pol,Den,Can",Yes,Yes,Yes
+APF,,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,No
+APF,AAPF,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,Yes
+APF,APF Raw,0(w),-,0,-,No,Yes,No
+APF,AAPF Raw,0(w),-,0,-,No,Yes,Yes
+APF,APF 1-ply,1,POL,1,POL,Yes,Yes,No
+APF,AAPF 1-ply,1,POL,1,POL,Yes,Yes,Yes
+APL,Single,1,"Pol,Den,Can",1,"Pol,Den,Can",No,No,No
+APL,Multi,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,No,No
+APL,Raw,0(w),-,0(k),-,-,No,No
+EPF,,2,"Pol,Den",UNL,"Pol,Den,Can",Yes,No,No
+EPF,Raw,0(w),-,0(k),-,No,No,No
+ESA,,0(w),-,0(k),-,No,Yes,No
+GW,Raw,0,-,0,-,No,No,No
+GW,Equip,2,"Pol,Den,Can",2,"Pol,Den,Can",No,No,No
+IBP,Raw,0(w),-,0(k),-,No,No,Yes
+IBP,Equip,1,Pol,1,Pol,No,No,Yes
+IPA,Pro,Unl,"Pol,Den,Can",2,"Pol,Den,Can",Yes,Yes,No
+IPA,Amateur,2,"Pol,Den,Can",2,"Pol,Den,Can",Yes,Yes,Yes
+IPA,Pro-Raw,0(w),-,0,-,No,Yes,No
+IPA,Am-Raw,0(w),-,0,-,No,Yes,Yes
+ISA,,2,"Pol,Den,Can",2,"Pol,Den,Can",Yes,Yes,No
+ISA,ISAA,2,"Pol,Den,Can",2,"Pol,Den,Can",Yes,Yes,Yes
+MSA,,0(w),-,0,-,No,No,No
+NASA,Equip,1,Pol,1,Pol,Yes,Yes,Yes
+NASA,Raw,0(w),-,0(k),-,No,Yes,Yes
+PPL,Raw,0(w),-,0(k),-,No,No,Yes
+PPL,Equip,1,"Pol,Den,Can",1,"Pol,Den,Can",Yes,No,Yes
+NOVA,,0,-,0,-,-,No,No
+PRIDE,Raw,0(w),-,0(k),-,-,No,No
+PRIDE,Geared,2,"Pol,Den",2,"Pol,Den,Can",Yes,No,No
+PRIDE,Unlimited,Unl,"Pol,Den,Can",Unl,"Pol,Den,Can",Yes,No,No
+PRPA,,0(w),-,0,-,-,No,No
+RAW United,Raw,0(w),-,0(s),-,-,No,No
+RAW United,Ironman,0,-,0,-,-,No,Yes
+SLP,,1,Pol,1,Pol,Yes,No,Yes
+SPF,Single,1,"Pol,Den,Can",1,"Pol,Den,Can",Yes,Yes,No
+SPF,Multi,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,No
+SPF,Raw,0(w),-,0(k),-,-,Yes,No
+SSA,Unlimited,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,No
+SSA,Single,1,"Pol,Den,Can",1,"Pol,Den,Can",No,Yes,No
+SSA,Standard,0(w),-,0,-,No,Yes,No
+UPA,Open,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,No
+UPA,Tested,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,Yes
+UPA,Raw Open,0(w),-,0(w),-,No,Yes,No
+UPA,Raw Test,0(w),-,0(w),-,No,Yes,Yes
+USAPL,,1,Pol,1,Pol,No,No,Yes
+USAPL,Raw,0(w),-,0,-,No,No,Yes
+USPA,Single,1,Pol,1,Pol,No,No,No
+USPA,Raw,0(w),-,0,-,No,No,No
+USPA,Multi,2,"Pol,Den",2,"Pol,Den,Can",Yes,Yes,No
+USPF,Single,1,Pol,1,Pol,Yes,No,No*
+USPF,Multi,2,"Pol,Den",2,"Pol,Den,Can",Yes,Yes,No*
+USPF,Raw,0(w),-,0,-,No,No,Yes
+WABDL,Single,1,"Pol,Den",1,Pol,Yes,-,Yes
+WABDL,Multi,2,"Pol,Den",-,-,-,-,Yes
+WCPF,Single,1,"Pol,Den",1,"Pol,Den",No,Yes,No
+WCPF,Multi,2,"Pol,Den",2,"Pol,Den,Can",Yes,Yes,No
+WCPF,Raw,0(w),-,0(k),-,-,Yes,No
+WNPF,Raw,0(w),-,0(k),-,No,Yes,Yes
+WNPF,Equip,1,"Pol,Den",1,"Pol,Den",No,Yes,Yes
+WNPF,Unlimited,3,"Pol,Den",2,"Pol,Den",Yes,Yes,Yes
+WNPFLT,Raw,0(w),-,0(k),-,No,Yes,Yes
+WNPFLT,Equip,1,Pol,1,Pol,No,Yes,Yes
+GPA,,0(w),-,0(k),-,-,Yes,No
+GPC,Equipped,2,"Pol,Den",UNL,"Pol,Den,Can",Yes,Yes,No
+GPC,Raw,0(w),-,0(k),-,-,Yes,No
+GPF,Equipped,2,,,,,,
+GPF,Raw,0(w),-,0(k),-,-,Yes,No
+IPF,,1,Pol,1,Pol,No,No,Yes
+WDFPF,Equip,1,Pol,1,Pol,No,No,Yes
+WDFPF,Raw,0 (w),-,0,-,No,No,Yes
+WPA,Open,2,"Pol,Den",2,Pol,Yes,Yes,No
+WPC,,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,No
+WPC,AWPC,UNL,"Pol,Den,Can",UNL,"Pol,Den,Can",Yes,Yes,Yes
+WPC,WPC Raw,0,-,0,-,No,Yes,No
+WPC,AWPC Raw,0,-,0,-,No,Yes,Yes
+WPF,,1,Pol,1,Pol,Yes,Yes,No
+WUAP,,2,"Pol,Den",Unl,"Pol,Can,Den",Yes,Yes,No
+CDFPA,Equipped,1,"Pol,Den",1,Pol,Yes,No,Yes
+CDFPA,Unequipped,0,-,0,-,No,No,Yes
+CPA,Open,2,"Pol,Den",2,Pol,Yes,Yes,No
+CPA,Tested,2,"Pol,Den",2,Pol,Yes,Yes,Yes
+CPO,,3,"Pol,Den",3,"Pol,Den,Can",Yes,Yes,No
+CPU,,1,Pol,1,Pol,No,No,Yes
+IPA,,2,"Pol,Den",Unl,"Pol,Den,Can",Yes,Yes,No
+BDFPA,Equipped,1,"Pol,Den",1,Pol,Yes,No,Yes
+BDFPA,Unequipped,0,-,0,-,No,No,Yes
+BPC,,2,"Pol,Den",UNL,"Pol,Den,Can",Yes,Yes,No
+BPO,,1,Pol,1,Pol,Yes,Yes,No
+GBPF,,1,Pol,1,Pol,No,No,Yes
+GPCGB,,2,"Pol,Den",Unl,"Pol,Den,Can",Yes,Yes,No
