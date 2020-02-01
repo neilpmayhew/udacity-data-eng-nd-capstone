@@ -28,7 +28,7 @@ aws_credentials_id='aws_credentials'
 with DAG('opl_dag',
           default_args=default_args,
           description='Stage data into redshift, transform and load into dimensional model',
-          schedule_interval='@hourly',
+          schedule_interval=None,
           catchup=False,
         ) as dag:
     
@@ -38,11 +38,11 @@ with DAG('opl_dag',
         task_id='Stage_oplmain',
         s3_region=s3_region,
         s3_bucket=s3_bucket,
-        s3_key='oplmain_data',
+        s3_key='opl_data/openpowerlifting-2020-01-03.csv',
         redshift_conn_id=redshift_conn_id,
         aws_credentials_id=aws_credentials_id,
         s3_format='CSV',
-        s3_format_args="",
+        s3_format_args="CSV IGNOREHEADER 1",
         staging_table='staging_oplmain'
     )
 
@@ -50,11 +50,11 @@ with DAG('opl_dag',
         task_id='Stage_federations',
         s3_region=s3_region,
         s3_bucket=s3_bucket,
-        s3_key='federation_data',
+        s3_key='federation_data/federations.csv',
         redshift_conn_id=redshift_conn_id,
         aws_credentials_id=aws_credentials_id,
         s3_format='CSV',
-        s3_format_args="",
+        s3_format_args="CSV IGNOREHEADER 1",
         staging_table='staging_federation',
         execution_date = None
     )
