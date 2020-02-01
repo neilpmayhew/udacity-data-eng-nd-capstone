@@ -1,1 +1,1 @@
-docker run -d -p 8080:8080 -v ./dags:/usr/local/airflow/dags -v ./plugins:/usr/local/airflow/plugins -v ./requirements.txt:/requirements.txt --name airflow puckel/docker-airflow webserver
+docker run -d -p 8080:8080 -v /home/neil/src/udacity-data-eng-nd-capstone/dags:/usr/local/airflow/dags -v /home/neil/src/udacity-data-eng-nd-capstone/plugins:/usr/local/airflow/plugins -v /home/neil/src/udacity-data-eng-nd-capstone/requirements.txt:/requirements.txt --name airflow puckel/docker-airflow webserver
