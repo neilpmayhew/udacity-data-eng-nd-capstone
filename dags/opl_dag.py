@@ -79,7 +79,7 @@ with DAG('opl_dag',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.weight_class_table_insert,
         target_table='public.weight_class',
-        target_columns=None,
+        target_columns=['federation_meet_key','weight_class_from_inclusive','weight_class_to_exclusive'],
         truncate=True
     )  
      

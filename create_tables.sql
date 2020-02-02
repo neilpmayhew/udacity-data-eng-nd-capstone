@@ -93,6 +93,7 @@ Name VARCHAR(256) NULL
 ,MeetState VARCHAR(256) NULL
 ,MeetName VARCHAR(256) NULL
 ,federation_meet_key CHAR(32) NOT NULL
+,weight_class_kg FLOAT NULL
 );
 DROP TABLE IF EXISTS public.staging_oplmain_weight_class;
 CREATE TABLE public.staging_oplmain_weight_class(
@@ -117,7 +118,7 @@ CREATE TABLE public.lifter(
 
 DROP TABLE IF EXISTS public.age_class;
 CREATE TABLE public.age_class(
-  age_key int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+  age_class_key int IDENTITY(1,1) NOT NULL PRIMARY KEY,
   age_class_from smallint NULL,
   age_class_to smallint NULL
 );
@@ -167,33 +168,35 @@ CREATE TABLE public.date (
     CONSTRAINT date_pkey PRIMARY KEY (date_value)
 );
 
-DROP TABLE IF EXISTS meet_result;
+DROP TABLE IF EXISTS public.meet_result;
 CREATE TABLE public.meet_result(
-  meet_result_key int NOT NULL,
-  federation_meet_key CHAR(32) NOT NULL,
-  weight_class_key int  NOT NULL,
-  lifter_key int NOT NULL,
-  meet_date date NOT NULL,
-  BodyweightKg float NOT NULL,
-  Age smallint NULL,
-  Squat1Kg float NOT NULL,
-  Squat2Kg float NOT NULL,
-  Squat3Kg float NOT NULL,
-  Squat4Kg float NOT NULL,
-  Best3SquatKg float NOT NULL,
-  Bench1Kg float NOT NULL,
-  Bench2Kg float NOT NULL,
-  Bench3Kg float NOT NULL,
-  Bench4Kg float NOT NULL,
-  Best3BenchKg float NOT NULL,
-  Deadlift1Kg float NOT NULL,
-  Deadlift2Kg float NOT NULL,
-  Deadlift3Kg float NOT NULL,
-  Deadlift4Kg float NOT NULL,
-  Best3DeadliftKg float NOT NULL,
-  TotalKg float NOT NULL,
-  Wilks float NOT NULL,
-  McCulloch float NOT NULL,
-  Glossbrenner float NOT NULL,
-  IPFPoints float NOT NULL
+  meet_result_key int IDENTITY(1,1) not null,
+  federation_meet_key char(32) not null,
+  weight_class_key int  not null,
+  lifter_key int not null,
+  age_class_key int NOT NULL,
+  birth_year_class_key int NOT NULL,
+  meet_date date not null,
+  body_weight_kg float not null,
+  age smallint null,
+  squat_1_kg float not null,
+  squat_2_kg float not null,
+  squat_3_kg float not null,
+  squat_4_kg float not null,
+  best_3_squat_kg float not null,
+  bench_1_kg float not null,
+  bench_2_kg float not null,
+  bench_3_kg float not null,
+  bench_4_kg float not null,
+  best_3_bench_kg float not null,
+  deadlift_1_kg float not null,
+  deadlift_2_kg float not null,
+  deadlift_3_kg float not null,
+  deadlift_4_kg float not null,
+  best_3_deadlift_kg float not null,
+  total_kg float not null,
+  wilks float not null,
+  mcculloch float not null,
+  gloss_brenner float not null,
+  ipf_points float not null
 );

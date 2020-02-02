@@ -5,22 +5,22 @@ SELECT DISTINCT Name, Sex, Event, Equipment, Age, AgeClass, BirthYearClass, Divi
 || COALESCE(Federation,'')
 || COALESCE(meetname,'')
 || COALESCE(event,'')
-) federation_meet_key
+) federation_meet_key, CONVERT(float,case
+    when REPLACE(trim(weightclasskg),'+','') ~ '^[0-9\.]+$' then trim(weightclasskg)
+    else null 
+end) as weight_class_kg
 FROM public.staging_oplmain;
 """)    
     staging_weight_class_table_insert=("""
 SELECT DISTINCT federation_meet_key
-, CONVERT(float,case
-    when REPLACE(trim(weightclasskg),'+','') ~ '^[0-9\.]+$' then trim(weightclasskg)
-    else null 
-end) as weight_class_kg
+, weight_class_kg
 FROM public.staging_oplmain_deduplicated
 WHERE weight_class_kg IS NOT NULL
 """)
     weight_class_table_insert=("""
 SELECT federation_meet_key
 ,weight_class_kg weight_class_from_inclusive
-,LEAD(weight_class_kg)OVER(PARTITION BY federation_meet_id ORDER BY weight_class_kg) weight_class_to_exclusive
+,LEAD(weight_class_kg)OVER(PARTITION BY federation_meet_key ORDER BY weight_class_kg) weight_class_to_exclusive
 FROM staging_oplmain_weight_class
 """)
     lifter_table_insert = ("""
@@ -50,7 +50,7 @@ SELECT DISTINCT
   ,division meet_division
   ,meetstate meet_state
   ,meetcountry meet_country
-  ,tested meet_tested
+  ,CONVERT(BOOLEAN,CASE tested WHEN 'Yes' THEN 1 WHEN 'No' THEN 0 END) meet_tested
   ,equipment meet_equipment
 FROM staging_oplmain_deduplicated
 """)
