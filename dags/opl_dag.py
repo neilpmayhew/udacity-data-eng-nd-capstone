@@ -42,7 +42,7 @@ with DAG('opl_dag',
         redshift_conn_id=redshift_conn_id,
         aws_credentials_id=aws_credentials_id,
         s3_format='CSV',
-        s3_format_args="CSV IGNOREHEADER 1",
+        s3_format_args="IGNOREHEADER 1",
         staging_table='staging_oplmain'
     )
 
@@ -54,25 +54,24 @@ with DAG('opl_dag',
         redshift_conn_id=redshift_conn_id,
         aws_credentials_id=aws_credentials_id,
         s3_format='CSV',
-        s3_format_args="CSV IGNOREHEADER 1",
-        staging_table='staging_federation',
-        execution_date = None
+        s3_format_args="IGNOREHEADER 1",
+        staging_table='staging_federation'
     )
 
-    # load_songplays_table = LoadFactOperator(
-    #     task_id='Load_songplays_fact_table',
-    #     redshift_conn_id=redshift_conn_id,
-    #     sql_query=SqlQueries.songplay_table_insert,
-    #     target_table='public.songplays'
-    # )
+    Deduplicate_data_staging_oplmain = LoadFactOperator(
+        task_id='Deduplicate_data_staging_oplmain',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.staging_oplmain_dedupe_insert,
+        target_table='public.staging_oplmain_deduplicated'
+    )
 
-    # load_user_dimension_table = LoadDimensionOperator(
-    #     task_id='Load_user_dim_table',
-    #     redshift_conn_id=redshift_conn_id,
-    #     sql_query=SqlQueries.user_table_insert,
-    #     target_table='public.users',
-    #     truncate=True
-    # )
+    load_user_dimension_table = LoadDimensionOperator(
+        task_id='Load_lifter_dim_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.lifter_table_insert,
+        target_table='public.lifter(Name,Sex)',
+        truncate=True
+    )
 
     # load_song_dimension_table = LoadDimensionOperator(
     #     task_id='Load_song_dim_table',
@@ -90,8 +89,10 @@ with DAG('opl_dag',
 
     end_operator = DummyOperator(task_id='Stop_execution')
 
-    start_operator >> [stage_events_to_redshift,stage_songs_to_redshift]
+    start_operator >> [stage_events_to_redshift,stage_songs_to_redshift,Deduplicate_data_staging_oplmain]
 
-    [stage_events_to_redshift,stage_songs_to_redshift] >> end_operator
+    [stage_events_to_redshift,stage_songs_to_redshift,Deduplicate_data_staging_oplmain] >> load_user_dimension_table
+    
+    load_user_dimension_table >> end_operator
 
 
