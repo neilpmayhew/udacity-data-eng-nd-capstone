@@ -19,6 +19,7 @@ class LoadDimensionOperator(BaseOperator):
                  redshift_conn_id,
                  sql_query,
                  target_table,
+                 target_columns,
                  truncate,
                  *args, **kwargs):
 
@@ -27,6 +28,7 @@ class LoadDimensionOperator(BaseOperator):
         self.redshift_conn_id=redshift_conn_id
         self.sql_query=sql_query
         self.target_table=target_table
+        self.target_columns=target_columns
         self.truncate=truncate
 
     def execute(self, context):
@@ -36,9 +38,13 @@ class LoadDimensionOperator(BaseOperator):
             self.log.info(f'Truncating target table: {self.target_table}')
 
             db.run(f"TRUNCATE TABLE {self.target_table}")
-                
+        if self.target_columns is None:
+            insert_columns = ""
+        else:
+            insert_columns = '(' + ",".join(self.target_columns) + ')'
+            
         insert_sql = f"""
-INSERT INTO {self.target_table}
+INSERT INTO {self.target_table} {insert_columns}
 {self.sql_query}"""
             
         self.log.info(f'Loading dimension target table: {self.target_table}, insert_sql: {insert_sql}')

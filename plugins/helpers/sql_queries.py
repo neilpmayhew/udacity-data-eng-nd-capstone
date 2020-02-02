@@ -1,13 +1,33 @@
 class SqlQueries:
     staging_oplmain_dedupe_insert=("""
-SELECT DISTINCT Name, Sex, Event, Equipment, Age, AgeClass, BirthYearClass, Division, BodyweightKg, WeightClassKg, Squat1Kg, Squat2Kg, Squat3Kg, Squat4Kg, Best3SquatKg, Bench1Kg, Bench2Kg, Bench3Kg, Bench4Kg, Best3BenchKg, Deadlift1Kg, Deadlift2Kg, Deadlift3Kg, Deadlift4Kg, Best3DeadliftKg, TotalKg, Place, Wilks, McCulloch, Glossbrenner, IPFPoints, Tested, Country, Federation, Date, MeetCountry, MeetState, MeetName
+SELECT DISTINCT Name, Sex, Event, Equipment, Age, AgeClass, BirthYearClass, Division, BodyweightKg, WeightClassKg, Squat1Kg, Squat2Kg, Squat3Kg, Squat4Kg, Best3SquatKg, Bench1Kg, Bench2Kg, Bench3Kg, Bench4Kg, Best3BenchKg, Deadlift1Kg, Deadlift2Kg, Deadlift3Kg, Deadlift4Kg, Best3DeadliftKg, TotalKg, Place, Wilks, McCulloch, Glossbrenner, IPFPoints, Tested, Country, Federation, Date, MeetCountry, MeetState, MeetName, md5(
+   COALESCE(date,'')
+|| COALESCE(Federation,'')
+|| COALESCE(meetname,'')
+|| COALESCE(event,'')
+) federation_meet_key
 FROM public.staging_oplmain;
+""")    
+    staging_weight_class_table_insert=("""
+SELECT DISTINCT federation_meet_key
+, CONVERT(float,case
+    when REPLACE(trim(weightclasskg),'+','') ~ '^[0-9\.]+$' then trim(weightclasskg)
+    else null 
+end) as weight_class_kg
+FROM public.staging_oplmain_deduplicated
+WHERE weight_class_kg IS NOT NULL
+""")
+    weight_class_table_insert=("""
+SELECT federation_meet_key
+,weight_class_kg weight_class_from_inclusive
+,LEAD(weight_class_kg)OVER(PARTITION BY federation_meet_id ORDER BY weight_class_kg) weight_class_to_exclusive
+FROM staging_oplmain_weight_class
 """)
     lifter_table_insert = ("""
 SELECT DISTINCT 
   Name
 , Sex
-FROM public.staging_oplmain;
+FROM public.staging_oplmain_deduplicated;
     """)
     age_class_table_insert=("""
 SELECT DISTINCT 
@@ -21,10 +41,30 @@ SELECT DISTINCT
 , CONVERT(smallint,COALESCE(NULLIF(SPLIT_PART(BirthYearClass,'-',2),''),'0')) birth_year_class_to
 FROM public.staging_oplmain_deduplicated
 """)
-    federation_table_insert=("""
+    federation_meet_table_insert=("""
 SELECT DISTINCT
-federation
+   federation_meet_key
+  ,federation federation_code
+  ,meetname meet_name
+  ,event meet_event_type
+  ,division meet_division
+  ,meetstate meet_state
+  ,meetcountry meet_country
+  ,tested meet_tested
+  ,equipment meet_equipment
 FROM staging_oplmain_deduplicated
+""")
+    federation_table_insert=("""
+SELECT federation federation_code
+, division
+,  bench_shirts_plies
+,  bench_shirts_material
+,  lifting_suits_plies
+,  lifting_suits_material
+,  CASE lifting_suits_brief WHEN 'Yes' THEN 1 ELSE 0 END lifting_suits_brief
+,  CASE mono WHEN 'Yes' THEN 1 ELSE 0 END mono
+,  CASE test WHEN 'Yes' THEN 1 ELSE 0 END test
+FROM staging_federation
 """)
     date_table_insert=("""
 SELECT DISTINCT TO_DATE (date, 'yyyy-MM-dd')  date_value
@@ -35,9 +75,5 @@ SELECT DISTINCT TO_DATE (date, 'yyyy-MM-dd')  date_value
 , EXTRACT(weekday from TO_DATE (date, 'yyyy-MM-dd')) weekday_value
 FROM staging_oplmain_deduplicated
 """)
-    weight_class_table_insert=("""
-SELECT DISTINCT date,Federation,meetname,event,WeightClassKg,
-LEAD(WeightClassKg)OVER(PARTITION BY date,Federation,meetname,event ORDER BY WeightClassKg) WeightClassKgto
-FROM staging_oplmain_deduplicated
-ORDER BY date,Federation,meetname,event,WeightClassKg
-""")
+    
+    
