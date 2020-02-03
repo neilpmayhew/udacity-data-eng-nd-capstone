@@ -35,8 +35,9 @@ AND o.weight_class_kg < wc.weight_class_to_exclusive
 LEFT JOIN public.lifter l
 ON l.name = o.Name
 AND l.Sex = o.Sex
-JOIN public.age_class ac
-ON 
+LEFT JOIN public.age_class ac
+ON ac.age_class_from = o.age_class_from
+AND ac.age_class_to = o.age_class_to
 WHERE wc.weight_class_key IS NULL
 LIMIT 20;
 

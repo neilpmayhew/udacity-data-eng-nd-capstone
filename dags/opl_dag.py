@@ -2,8 +2,7 @@ from datetime import datetime, timedelta
 import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
-                                LoadDimensionOperator, DataQualityOperator)
+from airflow.operators import (StageToRedshiftOperator, LoadTableOperator, DataQualityOperator)
 from helpers import SqlQueries,get_data_quality_queries
 
 # AWS_KEY = os.environ.get('AWS_KEY')
@@ -58,14 +57,16 @@ with DAG('opl_dag',
         staging_table='staging_federation'
     )
 
-    deduplicate_staging_oplmain = LoadFactOperator(
+    deduplicate_staging_oplmain = LoadTableOperator(
         task_id='Deduplicate_staging_oplmain',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.staging_oplmain_dedupe_insert,
-        target_table='public.staging_oplmain_deduplicated'
+        target_table='public.staging_oplmain_deduplicated',
+        target_columns=None,
+        truncate=True
     )
     
-    load_staging_oplmain_weight_class_table = LoadDimensionOperator(
+    load_staging_oplmain_weight_class_table = LoadTableOperator(
         task_id='Load_staging_oplmain_weight_class_table',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.staging_weight_class_table_insert,
@@ -74,7 +75,7 @@ with DAG('opl_dag',
         truncate=True
     )
    
-    load_dimension_weight_class_tabletable = LoadDimensionOperator(
+    load_dimension_weight_class_tabletable = LoadTableOperator(
         task_id='Load_dimension_weight_class_tabletable',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.weight_class_table_insert,
@@ -83,7 +84,7 @@ with DAG('opl_dag',
         truncate=True
     )  
      
-    load_dimension_lifter_table = LoadDimensionOperator(
+    load_dimension_lifter_table = LoadTableOperator(
         task_id='Load_dimension_lifter_table',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.lifter_table_insert,
@@ -92,7 +93,7 @@ with DAG('opl_dag',
         truncate=True
     )    
 
-    load_dimension_age_class_table = LoadDimensionOperator(
+    load_dimension_age_class_table = LoadTableOperator(
         task_id='Load_dimension_age_class_table',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.age_class_table_insert,
@@ -101,7 +102,7 @@ with DAG('opl_dag',
         truncate=True
     )
 
-    load_dimension_birth_year_class_table = LoadDimensionOperator(
+    load_dimension_birth_year_class_table = LoadTableOperator(
         task_id='Load_dimension_birth_year_class_table',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.birth_year_class_table_insert,
@@ -110,7 +111,7 @@ with DAG('opl_dag',
         truncate=True
     )    
 
-    load_dimension_federation_meet_table = LoadDimensionOperator(
+    load_dimension_federation_meet_table = LoadTableOperator(
         task_id='Load_dimension_federation_meet_table',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.federation_meet_table_insert,
@@ -119,7 +120,7 @@ with DAG('opl_dag',
         truncate=True
     )  
     
-    load_dimension_federation_table = LoadDimensionOperator(
+    load_dimension_federation_table = LoadTableOperator(
         task_id='Load_dimension_federation_table',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.federation_table_insert,
@@ -128,14 +129,22 @@ with DAG('opl_dag',
         truncate=True
     )  
     
-    load_dimension_date_table = LoadDimensionOperator(
+    load_dimension_date_table = LoadTableOperator(
         task_id='Load_dimension_date_table',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.date_table_insert,
         target_table='public.date',
         target_columns=None,
         truncate=True
-    )        
+    )
+    load_fact_meet_result_table = LoadTableOperator(
+        task_id='Load_fact_meet_result_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.meet_result_table_insert,
+        target_table='public.meet_result',
+        target_columns=['federation_meet_key','weight_class_key','lifter_key','age_class_key','birth_year_class_key','meet_date','body_weight_kg','age','squat_1_kg','squat_2_kg',               'squat_3_kg','squat_4_kg','best_3_squat_kg','bench_1_kg','bench_2_kg','bench_3_kg','bench_4_kg','best_3_bench_kg','deadlift_1_kg','deadlift_2_kg','deadlift_3_kg','deadlift_4_kg','best_3_deadlift_kg','total_kg','wilks','mcculloch','gloss_brenner','ipf_points'],
+        truncate=True
+    ) 
     
 
 
@@ -156,6 +165,8 @@ with DAG('opl_dag',
     load_staging_oplmain_weight_class_table >> load_dimension_weight_class_tabletable
     
     stage_federations_to_redshift >> load_dimension_federation_table
-    [load_dimension_weight_class_tabletable, load_dimension_lifter_table,load_dimension_age_class_table,load_dimension_birth_year_class_table,load_dimension_federation_meet_table,load_dimension_date_table,load_dimension_federation_table] >> end_operator
+    [load_dimension_weight_class_tabletable, load_dimension_lifter_table,load_dimension_age_class_table,load_dimension_birth_year_class_table,load_dimension_federation_meet_table,load_dimension_date_table,load_dimension_federation_table] >> load_fact_meet_result_table
+    
+    load_fact_meet_result_table >> end_operator
 
 
