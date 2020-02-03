@@ -3,3 +3,4 @@
 openpowerlifting-*
 auth.cfg
 *.tar
+.#*

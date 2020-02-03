@@ -16,33 +16,33 @@ Name VARCHAR(256) NULL
 ,Sex VARCHAR(256) NULL
 ,Event VARCHAR(256) NULL
 ,Equipment VARCHAR(256) NULL
-,Age float NULL
+,Age FLOAT NULL
 ,AgeClass VARCHAR(256) NULL
 ,BirthYearClass VARCHAR(256) NULL
 ,Division VARCHAR(256) NULL
-,BodyweightKg float NULL
+,BodyweightKg FLOAT NULL
 ,WeightClassKg VARCHAR(256) NULL
-,Squat1Kg float NULL
-,Squat2Kg float NULL
-,Squat3Kg float NULL
-,Squat4Kg float NULL
-,Best3SquatKg float NULL
-,Bench1Kg float NULL
-,Bench2Kg float NULL
-,Bench3Kg float NULL
-,Bench4Kg float NULL
-,Best3BenchKg float NULL
-,Deadlift1Kg float NULL
-,Deadlift2Kg float NULL
-,Deadlift3Kg float NULL
-,Deadlift4Kg float NULL
-,Best3DeadliftKg float NULL
-,TotalKg float NULL
+,Squat1Kg FLOAT NULL
+,Squat2Kg FLOAT NULL
+,Squat3Kg FLOAT NULL
+,Squat4Kg FLOAT NULL
+,Best3SquatKg FLOAT NULL
+,Bench1Kg FLOAT NULL
+,Bench2Kg FLOAT NULL
+,Bench3Kg FLOAT NULL
+,Bench4Kg FLOAT NULL
+,Best3BenchKg FLOAT NULL
+,Deadlift1Kg FLOAT NULL
+,Deadlift2Kg FLOAT NULL
+,Deadlift3Kg FLOAT NULL
+,Deadlift4Kg FLOAT NULL
+,Best3DeadliftKg FLOAT NULL
+,TotalKg FLOAT NULL
 ,Place VARCHAR(256) NULL
-,Wilks float NULL
-,McCulloch float NULL
-,Glossbrenner float NULL
-,IPFPoints float NULL
+,Wilks FLOAT NULL
+,McCulloch FLOAT NULL
+,Glossbrenner FLOAT NULL
+,IPFPoINTs FLOAT NULL
 ,Tested VARCHAR(256) NULL
 ,Country VARCHAR(256) NULL
 ,Federation VARCHAR(256) NULL
@@ -58,33 +58,33 @@ Name VARCHAR(256) NULL
 ,Sex VARCHAR(256) NULL
 ,Event VARCHAR(256) NULL
 ,Equipment VARCHAR(256) NULL
-,Age float NULL
+,Age FLOAT NULL
 ,AgeClass VARCHAR(256) NULL
 ,BirthYearClass VARCHAR(256) NULL
 ,Division VARCHAR(256) NULL
-,BodyweightKg float NULL
+,BodyweightKg FLOAT NULL
 ,WeightClassKg VARCHAR(256) NULL
-,Squat1Kg float NULL
-,Squat2Kg float NULL
-,Squat3Kg float NULL
-,Squat4Kg float NULL
-,Best3SquatKg float NULL
-,Bench1Kg float NULL
-,Bench2Kg float NULL
-,Bench3Kg float NULL
-,Bench4Kg float NULL
-,Best3BenchKg float NULL
-,Deadlift1Kg float NULL
-,Deadlift2Kg float NULL
-,Deadlift3Kg float NULL
-,Deadlift4Kg float NULL
-,Best3DeadliftKg float NULL
-,TotalKg float NULL
+,Squat1Kg FLOAT NULL
+,Squat2Kg FLOAT NULL
+,Squat3Kg FLOAT NULL
+,Squat4Kg FLOAT NULL
+,Best3SquatKg FLOAT NULL
+,Bench1Kg FLOAT NULL
+,Bench2Kg FLOAT NULL
+,Bench3Kg FLOAT NULL
+,Bench4Kg FLOAT NULL
+,Best3BenchKg FLOAT NULL
+,Deadlift1Kg FLOAT NULL
+,Deadlift2Kg FLOAT NULL
+,Deadlift3Kg FLOAT NULL
+,Deadlift4Kg FLOAT NULL
+,Best3DeadliftKg FLOAT NULL
+,TotalKg FLOAT NULL
 ,Place VARCHAR(256) NULL
-,Wilks float NULL
-,McCulloch float NULL
-,Glossbrenner float NULL
-,IPFPoints float NULL
+,Wilks FLOAT NULL
+,McCulloch FLOAT NULL
+,Glossbrenner FLOAT NULL
+,IPFPoINTs FLOAT NULL
 ,Tested VARCHAR(256) NULL
 ,Country VARCHAR(256) NULL
 ,Federation VARCHAR(256) NULL
@@ -94,6 +94,10 @@ Name VARCHAR(256) NULL
 ,MeetName VARCHAR(256) NULL
 ,federation_meet_key CHAR(32) NOT NULL
 ,weight_class_kg FLOAT NULL
+,age_class_from SMALLINT NOT NULL
+,age_class_to SMALLINT NOT NULL
+,birth_year_class_from SMALLINT NOT NULL
+,birth_year_class_to SMALLINT NOT NULL
 );
 DROP TABLE IF EXISTS public.staging_oplmain_weight_class;
 CREATE TABLE public.staging_oplmain_weight_class(
@@ -103,33 +107,33 @@ CREATE TABLE public.staging_oplmain_weight_class(
 
 DROP TABLE IF EXISTS public.weight_class;
 CREATE TABLE public.weight_class(
-  weight_class_key int IDENTITY(1,1) NOT NULL PRIMARY KEY ,
+  weight_class_key INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,
   federation_meet_key CHAR(32) NOT NULL UNIQUE,
-  weight_class_from_inclusive smallint NULL,
-  weight_class_to_exclusive smallint NULL
+  weight_class_from_inclusive SMALLINT NULL,
+  weight_class_to_exclusive SMALLINT NULL
 );
 
 DROP TABLE IF EXISTS lifter;
 CREATE TABLE public.lifter(
-  lifter_key int IDENTITY (1,1) NOT NULL PRIMARY KEY,
+  lifter_key INT IDENTITY (1,1) NOT NULL PRIMARY KEY,
   Name VARCHAR(256),
   Sex CHAR(2) NOT NULL
 );
 
 DROP TABLE IF EXISTS public.age_class;
 CREATE TABLE public.age_class(
-  age_class_key int IDENTITY(1,1) NOT NULL PRIMARY KEY,
-  age_class_from smallint NULL,
-  age_class_to smallint NULL
+  age_class_key INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+  age_class_from SMALLINT NOT NULL,
+  age_class_to SMALLINT NOT NULL
 );
 
 
 DROP TABLE IF EXISTS public.birth_year_class;
 
 CREATE TABLE public.birth_year_class(
-  birth_year_class_key int IDENTITY(1,1) NOT NULL PRIMARY KEY,
-  birth_year_class_from smallint null,
-  birth_year_class_to smallint null
+  birth_year_class_key INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+  birth_year_class_from SMALLINT NULL,
+  birth_year_class_to SMALLINT NULL
   );
 
 DROP TABLE IF EXISTS federation_meet;
@@ -160,43 +164,43 @@ CREATE TABLE public.federation_meet(
 DROP TABLE IF EXISTS public.date;
 CREATE TABLE public.date (
     date_value DATE NOT NULL, 
-    day int NOT NULL, 
-    week int NOT NULL, 
-    month int NOT NULL, 
-    year int NOT NULL, 
-    weekday int NOT NULL,
+    day INT NOT NULL, 
+    week INT NOT NULL, 
+    month INT NOT NULL, 
+    year INT NOT NULL, 
+    weekday INT NOT NULL,
     CONSTRAINT date_pkey PRIMARY KEY (date_value)
 );
 
 DROP TABLE IF EXISTS public.meet_result;
 CREATE TABLE public.meet_result(
-  meet_result_key int IDENTITY(1,1) not null,
-  federation_meet_key char(32) not null,
-  weight_class_key int  not null,
-  lifter_key int not null,
-  age_class_key int NOT NULL,
-  birth_year_class_key int NOT NULL,
-  meet_date date not null,
-  body_weight_kg float not null,
-  age smallint null,
-  squat_1_kg float not null,
-  squat_2_kg float not null,
-  squat_3_kg float not null,
-  squat_4_kg float not null,
-  best_3_squat_kg float not null,
-  bench_1_kg float not null,
-  bench_2_kg float not null,
-  bench_3_kg float not null,
-  bench_4_kg float not null,
-  best_3_bench_kg float not null,
-  deadlift_1_kg float not null,
-  deadlift_2_kg float not null,
-  deadlift_3_kg float not null,
-  deadlift_4_kg float not null,
-  best_3_deadlift_kg float not null,
-  total_kg float not null,
-  wilks float not null,
-  mcculloch float not null,
-  gloss_brenner float not null,
-  ipf_points float not null
+  meet_result_key INT IDENTITY(1,1) not NULL,
+  federation_meet_key char(32) not NULL,
+  weight_class_key INT  not NULL,
+  lifter_key INT not NULL,
+  age_class_key INT NOT NULL,
+  birth_year_class_key INT NOT NULL,
+  meet_date date not NULL,
+  body_weight_kg FLOAT not NULL,
+  age SMALLINT NULL,
+  squat_1_kg FLOAT not NULL,
+  squat_2_kg FLOAT not NULL,
+  squat_3_kg FLOAT not NULL,
+  squat_4_kg FLOAT not NULL,
+  best_3_squat_kg FLOAT not NULL,
+  bench_1_kg FLOAT not NULL,
+  bench_2_kg FLOAT not NULL,
+  bench_3_kg FLOAT not NULL,
+  bench_4_kg FLOAT not NULL,
+  best_3_bench_kg FLOAT not NULL,
+  deadlift_1_kg FLOAT not NULL,
+  deadlift_2_kg FLOAT not NULL,
+  deadlift_3_kg FLOAT not NULL,
+  deadlift_4_kg FLOAT not NULL,
+  best_3_deadlift_kg FLOAT not NULL,
+  total_kg FLOAT not NULL,
+  wilks FLOAT not NULL,
+  mcculloch FLOAT not NULL,
+  gloss_brenner FLOAT not NULL,
+  ipf_poINTs FLOAT not NULL
 );
