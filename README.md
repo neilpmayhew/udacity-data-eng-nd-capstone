@@ -20,7 +20,7 @@ I am using Airflow to build the data pipeline which has the following advantages
 2. A plethora hooks to interface with external platforms including Redshift which will make the operators simple to write
 3. Tasks (such stage data into a table or transform and load a dimension) are easily declared and configured using configuration-as-code in python
 4. Task dependencies and relationships are easily declared allowing Airflow to honour these dependencies and parallel execute as appropriate
-5. Airflow includes a full featured schedulier
+5. Airflow includes a full featured scheduler
 
 ## Addressing Future Scenarios/Requirements
 
@@ -40,5 +40,14 @@ Data exploration was conducted using jupyter notebooks and pandas. Please see da
 
 ## Data Model
 
+### Fact table: meet_result
+In a powerlifting meet a lifter has 3 attempts at each of the 3 lifts, 3 squat, 3 bench and 3 deadlift. The highest number from each lift are added together to form a total. A single meet_result record represent an instance of a lifter's result for a meet on a specific date, for a federation within whatever classes and equipment restrictions that are applicable to that meet.
 
+### Dimension tables
+the dimension tables have been chosen to allow the end user to aggregate, slice and data the meet_result data for example highest totalling female lifter within a specific weight range for a specific federation.
+
+#### AgeClass and BirthYearClass
+In Powerlifting competition these fields are ranges that may or may not be standard across the different federation. To make analysis easier the text hyphenated ranges were each split into two numeric values a from and a to value. As the ranges are not necessarily standardised the from and to values and be used in queries across the ranges overlaps to produce aggregates not easily available with the data in its native form
+#### WeightClass
+Weight class are actually ranges similar to AgeClass and BirthYearClass above but it is the convention to write them as just the lower boundary leaving the reader to infer the upper boundary for example a meet might have the following weight class 56, 63, 78, 95, 100, 110+. Again these are not standardised and to facilitate range overlap queries we use window function to produce a from inclusive and and a tor exclusive range value e.g. [56,63), [63,78),[78,95),[100,110),[110,999) (note that as per standard mathmatical notation square brackets denote inclusive, parenthesis exclusive).
 
