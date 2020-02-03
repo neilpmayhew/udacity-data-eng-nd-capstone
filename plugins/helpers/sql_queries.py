@@ -1,42 +1,79 @@
 class SqlQueries:
-    songplay_table_insert = ("""
-        SELECT
-                md5(events.sessionid || events.start_time) songplay_id,
-                events.start_time, 
-                events.userid, 
-                events.level, 
-                songs.song_id, 
-                songs.artist_id, 
-                events.sessionid, 
-                events.location, 
-                events.useragent
-                FROM (SELECT TIMESTAMP 'epoch' + ts/1000 * interval '1 second' AS start_time, *
-            FROM staging_events
-            WHERE page='NextSong') events
-            LEFT JOIN staging_songs songs
-            ON events.song = songs.title
-                AND events.artist = songs.artist_name
-                AND events.length = songs.duration
+    staging_oplmain_dedupe_insert=("""
+SELECT DISTINCT Name, Sex, Event, Equipment, Age, AgeClass, BirthYearClass, Division, BodyweightKg, WeightClassKg, Squat1Kg, Squat2Kg, Squat3Kg, Squat4Kg, Best3SquatKg, Bench1Kg, Bench2Kg, Bench3Kg, Bench4Kg, Best3BenchKg, Deadlift1Kg, Deadlift2Kg, Deadlift3Kg, Deadlift4Kg, Best3DeadliftKg, TotalKg, Place, Wilks, McCulloch, Glossbrenner, IPFPoints, Tested, Country, Federation, Date, MeetCountry, MeetState, MeetName, md5(
+   COALESCE(date,'')
+|| COALESCE(Federation,'')
+|| COALESCE(meetname,'')
+|| COALESCE(event,'')
+) federation_meet_key, CONVERT(float,case
+    when REPLACE(trim(weightclasskg),'+','') ~ '^[0-9\.]+$' then trim(weightclasskg)
+    else null 
+end) as weight_class_kg
+FROM public.staging_oplmain;
+""")    
+    staging_weight_class_table_insert=("""
+SELECT DISTINCT federation_meet_key
+, weight_class_kg
+FROM public.staging_oplmain_deduplicated
+WHERE weight_class_kg IS NOT NULL
+""")
+    weight_class_table_insert=("""
+SELECT federation_meet_key
+,weight_class_kg weight_class_from_inclusive
+,LEAD(weight_class_kg)OVER(PARTITION BY federation_meet_key ORDER BY weight_class_kg) weight_class_to_exclusive
+FROM staging_oplmain_weight_class
+""")
+    lifter_table_insert = ("""
+SELECT DISTINCT 
+  Name
+, Sex
+FROM public.staging_oplmain_deduplicated;
     """)
-
-    user_table_insert = (""" 
-        SELECT distinct userid, firstname, lastname, gender, level
-        FROM staging_events
-        WHERE page='NextSong'
-    """)
-
-    song_table_insert = ("""
-        SELECT distinct song_id, title, artist_id, year, duration
-        FROM staging_songs
-    """)
-
-    artist_table_insert = (""" 
-        SELECT distinct artist_id, artist_name, artist_location, artist_latitude, artist_longitude
-        FROM staging_songs
-    """)
-
-    time_table_insert = ("""   
-        SELECT start_time, extract(hour from start_time), extract(day from start_time), extract(week from start_time), 
-               extract(month from start_time), extract(year from start_time), extract(dayofweek from start_time)
-        FROM songplays
-    """)
+    age_class_table_insert=("""
+SELECT DISTINCT 
+  CONVERT(smallint,COALESCE(NULLIF(SPLIT_PART(AgeClass,'-',1),''),'0')) age_class_from
+, CONVERT(smallint,COALESCE(NULLIF(SPLIT_PART(AgeClass,'-',2),''),'0')) age_class_to
+FROM public.staging_oplmain_deduplicated
+""")
+    birth_year_class_table_insert=("""
+SELECT DISTINCT 
+  CONVERT(smallint,COALESCE(NULLIF(SPLIT_PART(BirthYearClass,'-',1),''),'0')) birth_year_class_from
+, CONVERT(smallint,COALESCE(NULLIF(SPLIT_PART(BirthYearClass,'-',2),''),'0')) birth_year_class_to
+FROM public.staging_oplmain_deduplicated
+""")
+    federation_meet_table_insert=("""
+SELECT DISTINCT
+   federation_meet_key
+  ,federation federation_code
+  ,meetname meet_name
+  ,event meet_event_type
+  ,division meet_division
+  ,meetstate meet_state
+  ,meetcountry meet_country
+  ,CONVERT(BOOLEAN,CASE tested WHEN 'Yes' THEN 1 WHEN 'No' THEN 0 END) meet_tested
+  ,equipment meet_equipment
+FROM staging_oplmain_deduplicated
+""")
+    federation_table_insert=("""
+SELECT federation federation_code
+, division
+,  bench_shirts_plies
+,  bench_shirts_material
+,  lifting_suits_plies
+,  lifting_suits_material
+,  CASE lifting_suits_brief WHEN 'Yes' THEN 1 ELSE 0 END lifting_suits_brief
+,  CASE mono WHEN 'Yes' THEN 1 ELSE 0 END mono
+,  CASE test WHEN 'Yes' THEN 1 ELSE 0 END test
+FROM staging_federation
+""")
+    date_table_insert=("""
+SELECT DISTINCT TO_DATE (date, 'yyyy-MM-dd')  date_value
+, EXTRACT(day from TO_DATE (date, 'yyyy-MM-dd')) day_value
+, EXTRACT(week from TO_DATE (date, 'yyyy-MM-dd')) week_value
+, EXTRACT(month from TO_DATE (date, 'yyyy-MM-dd')) month_value
+, EXTRACT(year from TO_DATE (date, 'yyyy-MM-dd')) year_value
+, EXTRACT(weekday from TO_DATE (date, 'yyyy-MM-dd')) weekday_value
+FROM staging_oplmain_deduplicated
+""")
+    
+    

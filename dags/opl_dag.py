@@ -34,7 +34,7 @@ with DAG('opl_dag',
     
     start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
     
-    stage_events_to_redshift = StageToRedshiftOperator(
+    stage_oplmain_to_redshift = StageToRedshiftOperator(
         task_id='Stage_oplmain',
         s3_region=s3_region,
         s3_bucket=s3_bucket,
@@ -42,11 +42,11 @@ with DAG('opl_dag',
         redshift_conn_id=redshift_conn_id,
         aws_credentials_id=aws_credentials_id,
         s3_format='CSV',
-        s3_format_args="CSV IGNOREHEADER 1",
+        s3_format_args="IGNOREHEADER 1",
         staging_table='staging_oplmain'
     )
 
-    stage_songs_to_redshift = StageToRedshiftOperator(
+    stage_federations_to_redshift = StageToRedshiftOperator(
         task_id='Stage_federations',
         s3_region=s3_region,
         s3_bucket=s3_bucket,
@@ -54,33 +54,90 @@ with DAG('opl_dag',
         redshift_conn_id=redshift_conn_id,
         aws_credentials_id=aws_credentials_id,
         s3_format='CSV',
-        s3_format_args="CSV IGNOREHEADER 1",
-        staging_table='staging_federation',
-        execution_date = None
+        s3_format_args="IGNOREHEADER 1",
+        staging_table='staging_federation'
     )
 
-    # load_songplays_table = LoadFactOperator(
-    #     task_id='Load_songplays_fact_table',
-    #     redshift_conn_id=redshift_conn_id,
-    #     sql_query=SqlQueries.songplay_table_insert,
-    #     target_table='public.songplays'
-    # )
+    deduplicate_staging_oplmain = LoadFactOperator(
+        task_id='Deduplicate_staging_oplmain',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.staging_oplmain_dedupe_insert,
+        target_table='public.staging_oplmain_deduplicated'
+    )
+    
+    load_staging_oplmain_weight_class_table = LoadDimensionOperator(
+        task_id='Load_staging_oplmain_weight_class_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.staging_weight_class_table_insert,
+        target_table='public.staging_oplmain_weight_class',
+        target_columns=None,
+        truncate=True
+    )
+   
+    load_dimension_weight_class_tabletable = LoadDimensionOperator(
+        task_id='Load_dimension_weight_class_tabletable',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.weight_class_table_insert,
+        target_table='public.weight_class',
+        target_columns=['federation_meet_key','weight_class_from_inclusive','weight_class_to_exclusive'],
+        truncate=True
+    )  
+     
+    load_dimension_lifter_table = LoadDimensionOperator(
+        task_id='Load_dimension_lifter_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.lifter_table_insert,
+        target_table='public.lifter',
+        target_columns=['Name','Sex'],
+        truncate=True
+    )    
 
-    # load_user_dimension_table = LoadDimensionOperator(
-    #     task_id='Load_user_dim_table',
-    #     redshift_conn_id=redshift_conn_id,
-    #     sql_query=SqlQueries.user_table_insert,
-    #     target_table='public.users',
-    #     truncate=True
-    # )
+    load_dimension_age_class_table = LoadDimensionOperator(
+        task_id='Load_dimension_age_class_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.age_class_table_insert,
+        target_table='public.age_class',
+        target_columns=['age_class_from','age_class_to'],
+        truncate=True
+    )
 
-    # load_song_dimension_table = LoadDimensionOperator(
-    #     task_id='Load_song_dim_table',
-    #     redshift_conn_id=redshift_conn_id,
-    #     sql_query=SqlQueries.song_table_insert,
-    #     target_table='public.songs',
-    #     truncate=True
-    # )
+    load_dimension_birth_year_class_table = LoadDimensionOperator(
+        task_id='Load_dimension_birth_year_class_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.birth_year_class_table_insert,
+        target_table='public.birth_year_class',
+        target_columns=['birth_year_class_from','birth_year_class_to'],
+        truncate=True
+    )    
+
+    load_dimension_federation_meet_table = LoadDimensionOperator(
+        task_id='Load_dimension_federation_meet_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.federation_meet_table_insert,
+        target_table='public.federation_meet',
+        target_columns=None,
+        truncate=True
+    )  
+    
+    load_dimension_federation_table = LoadDimensionOperator(
+        task_id='Load_dimension_federation_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.federation_table_insert,
+        target_table='public.federation',
+        target_columns=None,
+        truncate=True
+    )  
+    
+    load_dimension_date_table = LoadDimensionOperator(
+        task_id='Load_dimension_date_table',
+        redshift_conn_id=redshift_conn_id,
+        sql_query=SqlQueries.date_table_insert,
+        target_table='public.date',
+        target_columns=None,
+        truncate=True
+    )        
+    
+
 
     # run_quality_checks = DataQualityOperator(
     #     task_id='Run_data_quality_checks',
@@ -90,8 +147,15 @@ with DAG('opl_dag',
 
     end_operator = DummyOperator(task_id='Stop_execution')
 
-    start_operator >> [stage_events_to_redshift,stage_songs_to_redshift]
-
-    [stage_events_to_redshift,stage_songs_to_redshift] >> end_operator
+    start_operator >> [stage_oplmain_to_redshift,stage_federations_to_redshift]
+    
+    stage_oplmain_to_redshift >> deduplicate_staging_oplmain
+    
+    deduplicate_staging_oplmain >> [load_staging_oplmain_weight_class_table,load_dimension_lifter_table,load_dimension_age_class_table,load_dimension_birth_year_class_table,load_dimension_federation_meet_table,load_dimension_date_table]
+    
+    load_staging_oplmain_weight_class_table >> load_dimension_weight_class_tabletable
+    
+    stage_federations_to_redshift >> load_dimension_federation_table
+    [load_dimension_weight_class_tabletable, load_dimension_lifter_table,load_dimension_age_class_table,load_dimension_birth_year_class_table,load_dimension_federation_meet_table,load_dimension_date_table,load_dimension_federation_table] >> end_operator
 
 
