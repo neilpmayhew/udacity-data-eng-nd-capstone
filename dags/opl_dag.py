@@ -144,15 +144,13 @@ with DAG('opl_dag',
         target_table='public.meet_result',
         target_columns=['federation_meet_key','weight_class_key','lifter_key','age_class_key','birth_year_class_key','meet_date','body_weight_kg','age','squat_1_kg','squat_2_kg',               'squat_3_kg','squat_4_kg','best_3_squat_kg','bench_1_kg','bench_2_kg','bench_3_kg','bench_4_kg','best_3_bench_kg','deadlift_1_kg','deadlift_2_kg','deadlift_3_kg','deadlift_4_kg','best_3_deadlift_kg','total_kg','wilks','mcculloch','gloss_brenner','ipf_points'],
         truncate=True
-    ) 
+    )
     
-
-
-    # run_quality_checks = DataQualityOperator(
-    #     task_id='Run_data_quality_checks',
-    #     redshift_conn_id=redshift_conn_id,
-    #     data_quality_queries=get_data_quality_queries()
-    # )
+    run_data_quality_checks = DataQualityOperator(
+        task_id='Run_data_quality_checks',
+        redshift_conn_id=redshift_conn_id,
+        data_quality_queries=get_data_quality_queries()
+    )
 
     end_operator = DummyOperator(task_id='Stop_execution')
 
@@ -167,6 +165,8 @@ with DAG('opl_dag',
     stage_federations_to_redshift >> load_dimension_federation_table
     [load_dimension_weight_class_tabletable, load_dimension_lifter_table,load_dimension_age_class_table,load_dimension_birth_year_class_table,load_dimension_federation_meet_table,load_dimension_date_table,load_dimension_federation_table] >> load_fact_meet_result_table
     
-    load_fact_meet_result_table >> end_operator
+    load_fact_meet_result_table >> run_data_quality_checks
+    
+    run_data_quality_checks >> end_operator
 
 
