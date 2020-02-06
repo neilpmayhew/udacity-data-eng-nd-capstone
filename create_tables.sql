@@ -181,7 +181,7 @@ CREATE TABLE public.meet_result(
   age_class_key INT NOT NULL,
   birth_year_class_key INT NOT NULL,
   meet_date date NOT NULL,
-  body_weight_kg FLOAT NOT NULL,
+  body_weight_kg FLOAT NULL,
   age SMALLINT NULL,
   squat_1_kg FLOAT NULL,
   squat_2_kg FLOAT NULL,
@@ -198,9 +198,9 @@ CREATE TABLE public.meet_result(
   deadlift_3_kg FLOAT NULL,
   deadlift_4_kg FLOAT NULL,
   best_3_deadlift_kg FLOAT NULL,
-  total_kg FLOAT NOT NULL,
-  wilks FLOAT NOT NULL,
-  mcculloch FLOAT NOT NULL,
-  gloss_brenner FLOAT NOT NULL,
-  ipf_poINTs FLOAT NOT NULL
+  total_kg FLOAT NULL,
+  wilks FLOAT  NULL,
+  mcculloch FLOAT NULL,
+  gloss_brenner FLOAT NULL,
+  ipf_points FLOAT  NULL
 );
