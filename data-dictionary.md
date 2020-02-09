@@ -1,45 +1,4 @@
-# age_class
-dimension table:- represents an age class for a meet e.g. from 20-39 years of age
-  age_class_key, integer, not nullable - autoincrementing identity, primary key
-  age_class_from, smallint, not nullable - lower boundary, inclusive for the age class
-  age_class_to, smallint, not nullable - upper boundary, inclusive for the age class
-birth_year_class
-dimension table:- represents a birth class for a meet e.g. from 1990-2039 
-  birth_year_class_key, integer, not nullable - autoincrementing identity, primary key
-  birth_year_class_from, smallint, not nullable - lower boundary, inclusive for the birth year class
-  birth_year_class_to, smallint, not nullable - upper boundary, inclusive for the birth year class
-date
-  date_value, date, not nullable - date, primary key
-  day, small integer, not nullable - integer day of the month 
-  week, small integer, not nullable - integer week number 1-52
-  month, small integer, not nullable - integer month
-  year, small integer, not nullable - integer year
-  weekday, small integer, not nullable - integer day of week 1-7
-federation
-  federation_code, character varying, not nullable - autoincrementing identity, primary key
-  division, character varying, not nullable
-  bench_shirts_plies, character varying, not nullable
-  bench_shirts_material, character varying, not nullable
-  lifting_suits_plies, character varying, not nullable
-  lifting_suits_material, character varying, not nullable
-  lifting_suits_brief, boolean, not nullable
-  mono, boolean, nullable
-  test, boolean, nullable
-federation_meet
-  federation_meet_key, character, not nullable - primary key, an MD5 hash of key fields for a federation meet
-  federation_code, character varying, not nullable
-  meet_name, character varying, not nullable
-  meet_event_type, character varying, not nullable
-  meet_division, character varying, not nullable
-  meet_state, character varying, not nullable
-  meet_country, character varying, not nullable
-  meet_tested, boolean, nullable
-  meet_equipment, character varying, nullable
-lifter
-  lifter_key, integer, not nullable - autoincrementing identity, primary key
-  name, character varying, not nullable
-  sex, character, not nullable
-meet_result
+# meet_result
   meet_result_key, integer, not nullable - autoincrementing identity, primary key
   federation_meet_key, character, not nullable
   weight_class_key, integer, nullable
@@ -69,7 +28,48 @@ meet_result
   mcculloch, double precision, nullable
   gloss_brenner, double precision, nullable
   ipf_points, double precision, nullable
-weight_class
+# age_class
+dimension table:- represents an age class for a meet e.g. from 20-39 years of age
+  age_class_key, integer, not nullable - autoincrementing identity, primary key
+  age_class_from, smallint, not nullable - lower boundary, inclusive for the age class
+  age_class_to, smallint, not nullable - upper boundary, inclusive for the age class
+birth_year_class
+dimension table:- represents a birth class for a meet e.g. from 1990-2039 
+  birth_year_class_key, integer, not nullable - autoincrementing identity, primary key
+  birth_year_class_from, smallint, not nullable - lower boundary, inclusive for the birth year class
+  birth_year_class_to, smallint, not nullable - upper boundary, inclusive for the birth year class
+# date
+  date_value, date, not nullable - date, primary key
+  day, small integer, not nullable - integer day of the month 
+  week, small integer, not nullable - integer week number 1-52
+  month, small integer, not nullable - integer month
+  year, small integer, not nullable - integer year
+  weekday, small integer, not nullable - integer day of week 1-7
+# federation
+  federation_code, character varying, not nullable - autoincrementing identity, primary key
+  division, character varying, not nullable
+  bench_shirts_plies, character varying, not nullable
+  bench_shirts_material, character varying, not nullable
+  lifting_suits_plies, character varying, not nullable
+  lifting_suits_material, character varying, not nullable
+  lifting_suits_brief, boolean, not nullable
+  mono, boolean, nullable
+  test, boolean, nullable
+# federation_meet
+  federation_meet_key, character, not nullable - primary key, an MD5 hash of key fields for a federation meet
+  federation_code, character varying, not nullable
+  meet_name, character varying, not nullable
+  meet_event_type, character varying, not nullable
+  meet_division, character varying, not nullable
+  meet_state, character varying, not nullable
+  meet_country, character varying, not nullable
+  meet_tested, boolean, nullable
+  meet_equipment, character varying, nullable
+# lifter
+  lifter_key, integer, not nullable - autoincrementing identity, primary key
+  name, character varying, not nullable
+  sex, character, not nullable
+# weight_class
   weight_class_key, integer, not nullable
   federation_meet_key, character, not nullable
   weight_class_from_inclusive, smallint, not nullable

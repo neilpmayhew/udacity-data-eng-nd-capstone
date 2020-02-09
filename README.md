@@ -38,7 +38,7 @@ PL Federation details scraped from: https://www.powerliftingwatch.com/compare-fe
 
 ## Data Exploration
 
-Data exploration was conducted using jupyter notebooks and pandas. Please see data-exploration-opl.ipynb and data-exploration-federdation.ipynb for documentation of this process and findings.
+Data exploration was conducted using jupyter notebooks and pandas. Please see data-exploration-opl.ipynb and data-exploration-federdation.ipynb for documentation of this process and the findings.
 
 ## Data Model
 
@@ -46,10 +46,11 @@ Data exploration was conducted using jupyter notebooks and pandas. Please see da
 In a powerlifting meet a lifter has 3 attempts at each of the 3 lifts, 3 squat, 3 bench and 3 deadlift. The highest number from each lift are added together to form a total. A single meet_result record represent an instance of a lifter's result for a meet on a specific date, for a federation within whatever classes and equipment restrictions that are applicable to that meet.
 
 ### Dimension tables
-the dimension tables have been chosen to allow the end user to aggregate, slice and data the meet_result data for example highest totalling female lifter within a specific weight range for a specific federation.
+The dimension tables have been chosen to allow the end user to aggregate, slice and data the meet_result data for example highest totalling female lifter within a specific weight range for a specific federation.
 
 #### AgeClass and BirthYearClass
-In Powerlifting competition these fields are ranges that may or may not be standard across the different federation. To make analysis easier the text hyphenated ranges were each split into two numeric values a from and a to value. As the ranges are not necessarily standardised the from and to values and be used in queries across the ranges overlaps to produce aggregates not easily available with the data in its native form
+In Powerlifting competition these fields are ranges that may or may not be standard across the different federation. To make analysis easier the text hyphenated ranges were each split into two numeric values a from and a to value. As the ranges are not standardised across federations and meets, the "from" and "to" values can be used in queries across the ranges overlaps to produce aggregates not as easily available with the data in its original form
+
 #### WeightClass
-Weight class are actually ranges similar to AgeClass and BirthYearClass above but it is the convention to write them as just the lower boundary leaving the reader to infer the upper boundary for example a meet might have the following weight class 56, 63, 78, 95, 100, 110+. Again these are not standardised and to facilitate range overlap queries we use window function to produce a from inclusive and and a tor exclusive range value e.g. [56,63), [63,78),[78,95),[100,110),[110,999) (note that as per standard mathmatical notation square brackets denote inclusive, parenthesis exclusive).
+Weight classes are actually ranges similar to AgeClass and BirthYearClass above but it is the convention to write them as just the lower boundary leaving the reader to infer the upper boundary for example a meet might have the following weight classes 56, 63, 78, 95, 100, 110+. Again these are not standardised and to facilitate range overlap queries a window function is used to produce a "from" inclusive and and a "to"" exclusive range value e.g. [56,63), [63,78),[78,95),[100,110),[110,999) (note that as per standard mathematical notation square brackets denote inclusive, parenthesis exclusive).
 
