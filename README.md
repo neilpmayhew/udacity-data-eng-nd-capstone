@@ -18,17 +18,17 @@ I have chosen to use AWS's Redshift database for this problem. Redshift has the 
 
 ### Apache airflow
 I am using Airflow to build the data pipeline which has the following advantages:
-1. Able to build reusable operators in python code to facilitate the staging and transformation of data
-2. A plethora hooks to interface with external platforms including Redshift which will make the operators simple to write
+1. Ability to build reusable operators in python code to facilitate the staging and transformation of data
+2. A plethora of hooks to interface with external platforms including Redshift which will make the operators simple to write and allow us to extend to include other heterogeneous data sources in the future
 3. Tasks (such stage data into a table or transform and load a dimension) are easily declared and configured using configuration-as-code in python
-4. Task dependencies and relationships are easily declared allowing Airflow to honour these dependencies and parallel execute as appropriate
-5. Airflow includes a full featured scheduler
+4. Task dependencies and relationships are easily declared. Airflow will evaluate and honour these dependencies and parallel execute as appropriate
+5. Airflow includes a fully featured scheduler
 
 ## Addressing Future Scenarios/Requirements
 
-If the data was increassed 100x I would still use Redshift which is more than capable of handling such volumes. Redshift is horizontally scaleable so extra nodes can easily be added when needed. This scalebility also gives Redshift the ability to support 100+ concurrent users with ease.
+If the data was increased 100x Redshift would remain as the tool of choice as it is more than capable of handling such volumes. Redshift is horizontally scaleable so extra nodes can easily be added when needed plus it supports features such as distribution keys, sort keys and multiple methods of compression. These feature give Redshift the ability to support 100+ concurrent users with ease.
 
-If the need to run daily at 7 am were to arise this would be no problem for the airflow pipeline which is able to support a schedule such as this. Currently the main dataset is not available at this frequency so a source that could provide this would need to be found.
+If the need to run daily at 7 am were to arise this would be no problem for the airflow pipeline which is able to support a schedule such as this. Currently the main dataset is not available  with updates at this frequency so a source that could provide this would need to be found.
 
 ## Data Sources
 
