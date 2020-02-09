@@ -1,9 +1,11 @@
 # Capstone project for udacity data engineering nanodegree
 
 ## Project Scope and Goals
-I have a keen interest in weightlifting and recently came across a great resource for international Power Lifting results. The data comes in the form of a rather unwieldy single csv file. This file will make up the bulk of the data for this project and will seek other source with which to enrich this.
+https://www.openpowerlifting.org/ is a superb resource for international Power Lifting results. The web interface is limited to simple filters and the download for the data comes in the form of a single, rather unwieldy single csv file.
 
-The project goal is to produce a data model that will allow the end user to slice, dice and aggregate the various Powerlifting meet results to gain insights. For example to find the heaviest squat, bench and eadlift within each weight class, which lifter has the heaviest deadlift of all time etc.
+The project goal is to produce a data model that will allow the end user to slice, dice and aggregate the various Powerlifting meet results to allow analysis and gain insights. For example to find the heaviest squat, bench and deadlift within each weight class, which lifter has the heaviest deadlift of all time etc.
+
+The file will make up the bulk of the data for this project and I will seek other source with which to enrich this dataset.
 
 ## Technology Choices
 
@@ -12,7 +14,7 @@ I have chosen to use AWS's Redshift database for this problem. Redshift has the 
 
 1. It is an extremely powerful, horizontally scaleable, cloud based data warehouse
 2. It will facilitate the creation of a dimensional model allowing the slicing, dicing and grouping of the data required
-3. Will enable an ELT style of architecture. Simple COPY command will stage the data into staging table in the database then the power of Redshift will be transform and load the data all within Redshift itself making the code simpler to write and easier to maintain.
+3. Enables an ELT style of architecture. Simple COPY commands can stage the data into staging tables in the database then the massively power processing power of Redshift can be used to transform and load the data all within Redshift itself. This leads to a performant solution with simple code that is easier to write and maintain.
 
 ### Apache airflow
 I am using Airflow to build the data pipeline which has the following advantages:
