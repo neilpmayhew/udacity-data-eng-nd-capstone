@@ -109,14 +109,14 @@ DROP TABLE IF EXISTS public.weight_class;
 CREATE TABLE public.weight_class(
   weight_class_key INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,
   federation_meet_key CHAR(32) NOT NULL UNIQUE,
-  weight_class_from_inclusive SMALLINT NULL,
-  weight_class_to_exclusive SMALLINT NULL
+  weight_class_from_inclusive SMALLINT NOT NULL,
+  weight_class_to_exclusive SMALLINT NOT NULL
 );
 
 DROP TABLE IF EXISTS lifter;
 CREATE TABLE public.lifter(
   lifter_key INT IDENTITY (1,1) NOT NULL PRIMARY KEY,
-  Name VARCHAR(256),
+  Name VARCHAR(256) NOT NULL,
   Sex CHAR(2) NOT NULL
 );
 
@@ -132,8 +132,8 @@ DROP TABLE IF EXISTS public.birth_year_class;
 
 CREATE TABLE public.birth_year_class(
   birth_year_class_key INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-  birth_year_class_from SMALLINT NULL,
-  birth_year_class_to SMALLINT NULL
+  birth_year_class_from SMALLINT NOT NULL,
+  birth_year_class_to SMALLINT NOT NULL
   );
 
 DROP TABLE IF EXISTS federation_meet;
@@ -151,13 +151,13 @@ CREATE TABLE public.federation_meet(
  
  DROP TABLE IF EXISTS federation;
  CREATE TABLE public.federation(
-  federation_code VARCHAR(256) PRIMARY KEY,
-  division VARCHAR(256),
-  bench_shirts_plies VARCHAR(256),
-  bench_shirts_material VARCHAR(256),
-  lifting_suits_plies VARCHAR(256),
-  lifting_suits_material VARCHAR(256),
-  lifting_suits_brief BOOLEAN,
+  federation_code VARCHAR(256) NOT NULL PRIMARY KEY,
+  division VARCHAR(256) NOT NULL,
+  bench_shirts_plies VARCHAR(256) NOT NULL,
+  bench_shirts_material VARCHAR(256) NOT NULL,
+  lifting_suits_plies VARCHAR(256) NOT NULL,
+  lifting_suits_material VARCHAR(256) NOT NULL,
+  lifting_suits_brief BOOLEAN NOT NULL,
   mono BOOLEAN,
   test BOOLEAN
 );
@@ -178,8 +178,8 @@ CREATE TABLE public.meet_result(
   federation_meet_key char(32) NOT NULL,
   weight_class_key INT  NULL,
   lifter_key INT NOT NULL,
-  age_class_key INT NOT NULL,
-  birth_year_class_key INT NOT NULL,
+  age_class_key INT NULL,
+  birth_year_class_key INT NULL,
   meet_date date NOT NULL,
   body_weight_kg FLOAT NULL,
   age SMALLINT NULL,
