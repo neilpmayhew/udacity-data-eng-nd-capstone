@@ -164,11 +164,11 @@ CREATE TABLE public.federation_meet(
 DROP TABLE IF EXISTS public.date;
 CREATE TABLE public.date (
     date_value DATE NOT NULL, 
-    day INT NOT NULL, 
-    week INT NOT NULL, 
-    month INT NOT NULL, 
-    year INT NOT NULL, 
-    weekday INT NOT NULL,
+    day SMALLINT NOT NULL, 
+    week SMALLINT NOT NULL, 
+    month SMALLINT NOT NULL, 
+    year SMALLINT NOT NULL, 
+    weekday SMALLINT NOT NULL,
     CONSTRAINT date_pkey PRIMARY KEY (date_value)
 );
 
