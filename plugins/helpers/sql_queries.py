@@ -38,12 +38,16 @@ SELECT DISTINCT
   age_class_from
 , age_class_to
 FROM public.staging_oplmain_deduplicated
+WHERE COALESCE(age_class_from,0) > 0
+AND COALESCE(age_class_to,0) > 0
 """)
     birth_year_class_table_insert=("""
 SELECT DISTINCT 
   birth_year_class_from
 , birth_year_class_to
 FROM public.staging_oplmain_deduplicated
+WHERE COALESCE(birth_year_class_from,0) > 0
+AND COALESCE(birth_year_class_to,0) > 0
 """)
     federation_meet_table_insert=("""
 SELECT DISTINCT
