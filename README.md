@@ -5,7 +5,7 @@ https://www.openpowerlifting.org/ is a superb resource for international Power L
 
 The project goal is to produce a data model that will allow the end user to slice, dice and aggregate the various Powerlifting meet results to allow analysis and gain insights. For example to find the heaviest squat, bench and deadlift within each weight class, which lifter has the heaviest deadlift of all time etc.
 
-The file will make up the bulk of the data for this project and I will seek other source with which to enrich this dataset.
+The file will make up the bulk of the data for this project and I will seek other sources with which to enrich this dataset.
 
 ## Technology Choices
 
@@ -26,9 +26,9 @@ I am using Airflow to build the data pipeline which has the following advantages
 
 ## Addressing Future Scenarios/Requirements
 
-If the data was increased 100x Redshift would remain as the tool of choice as it is more than capable of handling such volumes. Redshift is horizontally scaleable so extra nodes can easily be added when needed plus it supports features such as distribution keys, sort keys and multiple methods of compression. These feature give Redshift the ability to support 100+ concurrent users with ease.
+If the data was increased 100x Redshift would remain as the tool of choice as it is more than capable of handling such volumes. Redshift is horizontally scaleable so extra nodes can easily be added when needed plus it supports features such as distribution keys, sort keys and multiple methods of compression. These features give Redshift the ability to support 100+ concurrent users with ease.
 
-If the need to run daily at 7 am were to arise this would be no problem for the airflow pipeline which is able to support a schedule such as this. Currently the main dataset is not available  with updates at this frequency so a source that could provide this would need to be found.
+If the need to run daily at 7 am were to arise this would be no problem for the airflow pipeline. The dag can very simply be scheduled by setting schedule_interval="0 7 * * *". Currently the main dataset is not available  with updates at this frequency so a source that could provide this would need to be found.
 
 ## Data Sources
 
@@ -41,6 +41,10 @@ PL Federation details scraped from: https://www.powerliftingwatch.com/compare-fe
 Data exploration was conducted using jupyter notebooks and pandas. Please see data-exploration-opl.ipynb and data-exploration-federdation.ipynb for documentation of this process and the findings.
 
 ## Data Model
+
+![Diagram](data_model.odg)
+
+![Data Dictionary](data-dictionary.md)
 
 ### Fact table: meet_result
 In a powerlifting meet a lifter has 3 attempts at each of the 3 lifts, 3 squat, 3 bench and 3 deadlift. The highest number from each lift are added together to form a total. A single meet_result record represent an instance of a lifter's result for a meet on a specific date, for a federation within whatever classes and equipment restrictions that are applicable to that meet.
