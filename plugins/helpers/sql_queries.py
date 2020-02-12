@@ -108,6 +108,11 @@ SELECT    o.federation_meet_key,
   o.Deadlift4Kg deadlift_4_kg,
   o.Best3DeadliftKg best_3_deadlift_kg,
   o.TotalKg total_kg,
+  CONVERT(smallint,case
+    when REPLACE(trim(o.place),'+','') ~ '^[0-9\.]+$' then trim(o.place)
+    else null 
+end) as place_numeric,
+  o.place,
   o.Wilks wilks,
   o.Mcculloch mcculloch,
   o.GlossBrenner gloss_brenner,

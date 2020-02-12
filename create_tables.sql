@@ -199,6 +199,8 @@ CREATE TABLE public.meet_result(
   deadlift_4_kg FLOAT NULL,
   best_3_deadlift_kg FLOAT NULL,
   total_kg FLOAT NULL,
+  place_numeric SMALLINT NULL,
+  place VARCHAR(10) NULL,
   wilks FLOAT  NULL,
   mcculloch FLOAT NULL,
   gloss_brenner FLOAT NULL,

@@ -142,7 +142,7 @@ with DAG('opl_dag',
         redshift_conn_id=redshift_conn_id,
         sql_query=SqlQueries.meet_result_table_insert,
         target_table='public.meet_result',
-        target_columns=['federation_meet_key','weight_class_key','lifter_key','age_class_key','birth_year_class_key','meet_date','body_weight_kg','age','squat_1_kg','squat_2_kg',               'squat_3_kg','squat_4_kg','best_3_squat_kg','bench_1_kg','bench_2_kg','bench_3_kg','bench_4_kg','best_3_bench_kg','deadlift_1_kg','deadlift_2_kg','deadlift_3_kg','deadlift_4_kg','best_3_deadlift_kg','total_kg','wilks','mcculloch','gloss_brenner','ipf_points'],
+        target_columns=['federation_meet_key','weight_class_key','lifter_key','age_class_key','birth_year_class_key','meet_date','body_weight_kg','age','squat_1_kg','squat_2_kg',               'squat_3_kg','squat_4_kg','best_3_squat_kg','bench_1_kg','bench_2_kg','bench_3_kg','bench_4_kg','best_3_bench_kg','deadlift_1_kg','deadlift_2_kg','deadlift_3_kg','deadlift_4_kg','best_3_deadlift_kg','total_kg','place_numeric','place','wilks','mcculloch','gloss_brenner','ipf_points'],
         truncate=True
     )
     
