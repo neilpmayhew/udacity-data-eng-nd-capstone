@@ -57,9 +57,9 @@ dimension table:- represents a birth class for a meet e.g. from 1990-2039
   test, boolean, nullable
 # federation_meet
   federation_meet_key, character, not nullable - primary key, an MD5 hash of key fields for a federation meet
-  federation_code, character varying, not nullable
+  federation_code, character varying, not nullable - code for the federation, joins to federation.federation_code
   meet_name, character varying, not nullable
-  meet_event_type, character varying, not nullable
+  meet_event_type, character varying, not nullable. 1-3 characters representing the lifts at the meet S = Squat, B = Bench Press, D = Deadlift
   meet_division, character varying, not nullable
   meet_state, character varying, not nullable
   meet_country, character varying, not nullable
@@ -72,5 +72,5 @@ dimension table:- represents a birth class for a meet e.g. from 1990-2039
 # weight_class
   weight_class_key, integer, not nullable
   federation_meet_key, character, not nullable
-  weight_class_from_inclusive, smallint, not nullable
-  weight_class_to_exclusive, smallint, not nullable
+  weight_class_from_inclusive, smallint, not nullable - inclusive lower boundary for the weight class
+  weight_class_to_exclusive, smallint, not nullable - exclusive upper boundary for the weight class
