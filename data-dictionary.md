@@ -29,12 +29,10 @@
   gloss_brenner, double precision, nullable, coeffient for strength allowing for body weight an alternative to wilks
   ipf_points, double precision, nullable, an alternative coeffient used by the ipf
 # age_class
-dimension table:- represents an age class for a meet e.g. from 20-39 years of age
   age_class_key, integer, not nullable - autoincrementing identity, primary key
   age_class_from, smallint, not nullable - lower boundary, inclusive for the age class
   age_class_to, smallint, not nullable - upper boundary, inclusive for the age class
-birth_year_class
-dimension table:- represents a birth class for a meet e.g. from 1990-2039 
+# birth_year_class
   birth_year_class_key, integer, not nullable - autoincrementing identity, primary key
   birth_year_class_from, smallint, not nullable - lower boundary, inclusive for the birth year class
   birth_year_class_to, smallint, not nullable - upper boundary, inclusive for the birth year class
